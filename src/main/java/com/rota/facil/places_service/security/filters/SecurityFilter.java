@@ -1,6 +1,5 @@
 package com.rota.facil.places_service.security.filters;
 
-import com.rota.facil.places_service.http.dto.request.AuthGatewayRequest;
 import com.rota.facil.places_service.http.dto.request.CurrentUser;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
