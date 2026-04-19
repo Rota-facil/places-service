@@ -1,6 +1,6 @@
 package com.rota.facil.places_service;
 
 public enum ResourceName {
-    PREFECTURE,
+    INSTITUTION,
     BOARD_POINT
 }

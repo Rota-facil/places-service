@@ -6,12 +6,17 @@ import com.rota.facil.places_service.domain.enums.Role;
 
 import java.util.UUID;
 
-public record AuditPlaceEventSend(
+public record BoardPointEvent(
         UUID userId,
         Role role,
         String actionTitle,
         ActionType actionType,
         ResourceName resourceName,
-        UUID resourceId
+        UUID resourceId,
+
+        UUID boardId,
+        String name,
+        String latitude,
+        String longitude
 ) {
 }
