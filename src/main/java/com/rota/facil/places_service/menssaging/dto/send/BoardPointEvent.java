@@ -16,7 +16,7 @@ public record BoardPointEvent(
 
         UUID boardId,
         String name,
-        String latitude,
-        String longitude
+        Double latitude,
+        Double longitude
 ) {
 }

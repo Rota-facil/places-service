@@ -25,9 +25,9 @@ public class InstitutionEntity {
 
     private String name;
 
-    private String latitude;
+    private Double latitude;
 
-    private String longitude;
+    private Double longitude;
 
     @Builder.Default
     @CreationTimestamp

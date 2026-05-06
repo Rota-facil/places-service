@@ -16,8 +16,8 @@ public record InstitutionEvent(
 
         UUID institutionId,
         String name,
-        String latitude,
-        String longitude
+        Double latitude,
+        Double longitude
 
 ) {
 }
