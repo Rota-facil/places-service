@@ -33,4 +33,10 @@ public class BoardPointEntity {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    public void update(BoardPointEntity infoToUpdate) {
+        if (infoToUpdate.getName() != null) this.name = infoToUpdate.getName();
+        if (infoToUpdate.getLatitude() != null) this.latitude = infoToUpdate.getLatitude();
+        if (infoToUpdate.getLongitude() != null) this.longitude = infoToUpdate.getLongitude();
+    }
 }

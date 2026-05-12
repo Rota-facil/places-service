@@ -1,6 +1,5 @@
 package com.rota.facil.places_service.menssaging.producers;
 
-import com.rota.facil.places_service.ResourceName;
 import com.rota.facil.places_service.domain.enums.ActionType;
 import com.rota.facil.places_service.http.dto.request.CurrentUser;
 import com.rota.facil.places_service.menssaging.dto.send.BoardPointEvent;
@@ -11,7 +10,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor

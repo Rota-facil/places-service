@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class InstitutionEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "institution_id")
     private UUID id;
 
@@ -33,4 +33,10 @@ public class InstitutionEntity {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    public void update(InstitutionEntity infoToUpdate) {
+        if (infoToUpdate.getName() != null) this.name = infoToUpdate.getName();
+        if (infoToUpdate.getLatitude() != null) this.latitude = infoToUpdate.getLatitude();
+        if (infoToUpdate.getLongitude() != null) this.longitude = infoToUpdate.getLongitude();
+    }
 }
