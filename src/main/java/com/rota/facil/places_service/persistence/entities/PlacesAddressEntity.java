@@ -29,4 +29,10 @@ public class PlacesAddressEntity {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    public void update(PlacesAddressEntity infoToUpdate) {
+        if (infoToUpdate.getCity() != null) this.city = infoToUpdate.getCity();
+        if (infoToUpdate.getNeighborhood() != null) this.neighborhood = infoToUpdate.getNeighborhood();
+        if (infoToUpdate.getRoad() != null) this.road = infoToUpdate.getRoad();
+    }
 }

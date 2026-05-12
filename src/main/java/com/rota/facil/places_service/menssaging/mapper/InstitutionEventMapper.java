@@ -1,6 +1,5 @@
 package com.rota.facil.places_service.menssaging.mapper;
 
-import com.rota.facil.places_service.ResourceName;
 import com.rota.facil.places_service.domain.enums.ActionType;
 import com.rota.facil.places_service.http.dto.request.CurrentUser;
 import com.rota.facil.places_service.menssaging.dto.send.InstitutionEvent;
