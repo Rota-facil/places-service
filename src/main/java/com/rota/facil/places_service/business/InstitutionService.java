@@ -1,7 +1,7 @@
 package com.rota.facil.places_service.business;
 
 import com.rota.facil.places_service.domain.exceptions.InstitutionNotFoundException;
-import com.rota.facil.places_service.domain.exceptions.PlacesAddresNotFoundException;
+import com.rota.facil.places_service.domain.exceptions.PlacesAddressNotFoundException;
 import com.rota.facil.places_service.http.dto.request.CurrentUser;
 import com.rota.facil.places_service.http.dto.request.institution.CreateInstitutionRequestDTO;
 import com.rota.facil.places_service.http.dto.request.institution.UpdateInstitutionRequestDTO;
@@ -30,7 +30,7 @@ public class InstitutionService {
         InstitutionEntity preSaved = institutionMapper.map(request);
 
         PlacesAddressEntity placesAddressFound = placesAddressRepository.findById(request.placesAddressId())
-            .orElseThrow(PlacesAddresNotFoundException::new);
+            .orElseThrow(PlacesAddressNotFoundException::new);
 
         preSaved.setPlacesAddress(placesAddressFound);
 
@@ -59,7 +59,7 @@ public class InstitutionService {
             .orElseThrow(InstitutionNotFoundException::new);
 
         PlacesAddressEntity placesAddressFound = placesAddressRepository.findById(request.placesAddressId())
-            .orElseThrow(PlacesAddresNotFoundException::new);
+            .orElseThrow(PlacesAddressNotFoundException::new);
 
         InstitutionEntity infoToUpdate = institutionMapper.map(request);
         found.update(infoToUpdate);

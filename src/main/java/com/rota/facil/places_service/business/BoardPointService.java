@@ -1,7 +1,7 @@
 package com.rota.facil.places_service.business;
 
 import com.rota.facil.places_service.domain.exceptions.BoardPointNotFoundException;
-import com.rota.facil.places_service.domain.exceptions.PlacesAddresNotFoundException;
+import com.rota.facil.places_service.domain.exceptions.PlacesAddressNotFoundException;
 import com.rota.facil.places_service.http.dto.request.CurrentUser;
 import com.rota.facil.places_service.http.dto.request.boardpoint.CreateBoardPointRequestDTO;
 import com.rota.facil.places_service.http.dto.request.boardpoint.UpdateBoardPointRequestDTO;
@@ -29,7 +29,7 @@ public class BoardPointService {
         BoardPointEntity preSaved = boardPointMapper.map(request);
 
         PlacesAddressEntity placesAddressFound = placesAddressRepository.findById(request.placesAddressId())
-            .orElseThrow(PlacesAddresNotFoundException::new);
+            .orElseThrow(PlacesAddressNotFoundException::new);
 
         preSaved.setPlacesAddress(placesAddressFound);
 
@@ -57,7 +57,7 @@ public class BoardPointService {
             .orElseThrow(BoardPointNotFoundException::new);
 
         PlacesAddressEntity placesAddressFound = placesAddressRepository.findById(request.placesAddressId())
-            .orElseThrow(PlacesAddresNotFoundException::new);
+            .orElseThrow(PlacesAddressNotFoundException::new);
             
         
         BoardPointEntity infoToUpdate = boardPointMapper.map(request);
