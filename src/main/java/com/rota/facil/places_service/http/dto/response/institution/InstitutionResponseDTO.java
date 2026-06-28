@@ -8,9 +8,7 @@ public record InstitutionResponseDTO(
     String name,
     Double latitude,
     Double longitude,
-    LocalDateTime createdAt,
-    InstitutionPlacesAddressResponseDTO placeAddress
-
+    LocalDateTime createdAt
 ) {
     
 }

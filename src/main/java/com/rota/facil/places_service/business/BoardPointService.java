@@ -1,17 +1,14 @@
 package com.rota.facil.places_service.business;
 
 import com.rota.facil.places_service.domain.exceptions.BoardPointNotFoundException;
-import com.rota.facil.places_service.domain.exceptions.PlacesAddressNotFoundException;
 import com.rota.facil.places_service.http.dto.request.CurrentUser;
 import com.rota.facil.places_service.http.dto.request.boardpoint.CreateBoardPointRequestDTO;
 import com.rota.facil.places_service.http.dto.request.boardpoint.UpdateBoardPointRequestDTO;
 import com.rota.facil.places_service.http.dto.response.boardpoint.BoardPointResponseDTO;
 import com.rota.facil.places_service.menssaging.producers.RabbitPlacesBoardPointEventProducer;
 import com.rota.facil.places_service.persistence.entities.BoardPointEntity;
-import com.rota.facil.places_service.persistence.entities.PlacesAddressEntity;
 import com.rota.facil.places_service.persistence.mappers.BoardPointMapper;
 import com.rota.facil.places_service.persistence.repositories.BoardPointRepository;
-import com.rota.facil.places_service.persistence.repositories.PlacesAddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -21,18 +18,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BoardPointService {
     private final BoardPointRepository boardPointRepository;
-    private final PlacesAddressRepository placesAddressRepository;
     private final RabbitPlacesBoardPointEventProducer boardPointEventProducer;
     private final BoardPointMapper boardPointMapper;
 
     public BoardPointResponseDTO register(CreateBoardPointRequestDTO request, CurrentUser currentUser) {
         BoardPointEntity preSaved = boardPointMapper.map(request);
-
-        PlacesAddressEntity placesAddressFound = placesAddressRepository.findById(request.placesAddressId())
-            .orElseThrow(PlacesAddressNotFoundException::new);
-
-        preSaved.setPlacesAddress(placesAddressFound);
-
         BoardPointEntity saved = boardPointRepository.save(preSaved);
 
         boardPointEventProducer.createBoardPointEvent(saved, currentUser);
@@ -56,14 +46,8 @@ public class BoardPointService {
         BoardPointEntity found = boardPointRepository.findById(id)
             .orElseThrow(BoardPointNotFoundException::new);
 
-        PlacesAddressEntity placesAddressFound = placesAddressRepository.findById(request.placesAddressId())
-            .orElseThrow(PlacesAddressNotFoundException::new);
-            
-        
         BoardPointEntity infoToUpdate = boardPointMapper.map(request);
         found.update(infoToUpdate);
-        found.setPlacesAddress(placesAddressFound);
-
         BoardPointEntity updated = boardPointRepository.save(found);
 
         boardPointEventProducer.updateBoardPointEvent(updated, currentUser);

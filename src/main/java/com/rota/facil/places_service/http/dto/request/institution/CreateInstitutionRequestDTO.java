@@ -6,9 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record CreateInstitutionRequestDTO(
-    @NotNull(message = "O endereço é obrigatório")
-    UUID placesAddressId,
-
     @NotBlank(message = "O nome é obrigatório")
     String name,
 

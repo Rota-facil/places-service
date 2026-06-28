@@ -8,6 +8,5 @@ public record BoardPointResponseDTO(
     String name,
     Double latitude,
     Double longitude,
-    LocalDateTime createdAt,
-    BoardPointPlacesAddressResponseDTO placesAddress
+    LocalDateTime createdAt
 ) {}

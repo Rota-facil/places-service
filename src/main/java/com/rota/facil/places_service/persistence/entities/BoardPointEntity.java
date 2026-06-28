@@ -19,10 +19,6 @@ public class BoardPointEntity {
     @Column(name = "board_point_id")
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "place_address_id")
-    private PlacesAddressEntity placesAddress;
-
     private String name;
 
     private Double latitude;

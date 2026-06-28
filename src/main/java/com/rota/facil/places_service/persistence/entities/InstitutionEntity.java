@@ -19,10 +19,6 @@ public class InstitutionEntity {
     @Column(name = "institution_id")
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "place_address_id")
-    private PlacesAddressEntity placesAddress;
-
     private String name;
 
     private Double latitude;

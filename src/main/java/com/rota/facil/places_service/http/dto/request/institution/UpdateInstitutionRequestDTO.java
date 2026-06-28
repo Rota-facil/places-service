@@ -5,9 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record UpdateInstitutionRequestDTO(
-    @NotNull(message = "O endereço é obrigatório")
-    UUID placesAddressId,
-
     @NotBlank(message = "O nome é obrigatório")
     String name,
 

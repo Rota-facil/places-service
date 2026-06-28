@@ -5,9 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record UpdateBoardPointRequestDTO(
-    @NotNull(message = "O endereço é obrigatório")
-    UUID placesAddressId,
-
     @NotBlank(message = "O nome é obrigatório")
     String name,
 
