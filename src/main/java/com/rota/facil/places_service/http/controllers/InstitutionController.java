@@ -5,6 +5,7 @@ import com.rota.facil.places_service.http.dto.request.CurrentUser;
 import com.rota.facil.places_service.http.dto.request.institution.CreateInstitutionRequestDTO;
 import com.rota.facil.places_service.http.dto.request.institution.UpdateInstitutionRequestDTO;
 import com.rota.facil.places_service.http.dto.response.institution.InstitutionResponseDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/institutions")
 @RequiredArgsConstructor
