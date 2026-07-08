@@ -10,6 +10,8 @@ import com.rota.facil.places_service.persistence.entities.InstitutionEntity;
 import com.rota.facil.places_service.persistence.mappers.InstitutionMapper;
 import com.rota.facil.places_service.persistence.repositories.InstitutionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,11 +39,9 @@ public class InstitutionService {
         return institutionMapper.map(found);
     }
 
-    public List<InstitutionResponseDTO> findAll() {
-        return institutionRepository.findAll()
-            .stream()
-            .map(institutionMapper::map)
-            .toList();
+    public Page<InstitutionResponseDTO> findAll(Pageable pageable) {
+        return institutionRepository.findAll(pageable)
+            .map(institutionMapper::map);
     }
 
     public InstitutionResponseDTO update(UUID id, UpdateInstitutionRequestDTO request, CurrentUser currentUser) {

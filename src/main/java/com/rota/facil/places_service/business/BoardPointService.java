@@ -10,6 +10,8 @@ import com.rota.facil.places_service.persistence.entities.BoardPointEntity;
 import com.rota.facil.places_service.persistence.mappers.BoardPointMapper;
 import com.rota.facil.places_service.persistence.repositories.BoardPointRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
@@ -35,11 +37,9 @@ public class BoardPointService {
         return boardPointMapper.map(found);
     }
 
-    public List<BoardPointResponseDTO> findAll() {
-        return boardPointRepository.findAll()
-            .stream()
-            .map(boardPointMapper::map)
-            .toList();
+    public Page<BoardPointResponseDTO> findAll(Pageable pageable) {
+        return boardPointRepository.findAll(pageable)
+            .map(boardPointMapper::map);
     }
 
     public BoardPointResponseDTO update(UUID id, UpdateBoardPointRequestDTO request, CurrentUser currentUser) {
