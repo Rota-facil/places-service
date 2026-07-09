@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public record InstitutionUpdatedEvent(
         UUID userId,
+        UUID prefectureId,
         String role,
         String userEmail,
         String actionTitle,

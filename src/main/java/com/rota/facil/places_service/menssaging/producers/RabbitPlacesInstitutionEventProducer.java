@@ -33,6 +33,7 @@ public class RabbitPlacesInstitutionEventProducer {
         PlaceAuditAction auditAction = PlaceAuditAction.INSTITUTION_CREATED;
         InstitutionCreatedEvent eventSend = new InstitutionCreatedEvent(
                 currentUser.userId(),
+                currentUser.prefectureId(),
                 currentUser.role(),
                 currentUser.email(),
                 auditAction.title(currentUser.email(), entity.getName()),
@@ -52,6 +53,7 @@ public class RabbitPlacesInstitutionEventProducer {
         PlaceAuditAction auditAction = PlaceAuditAction.INSTITUTION_UPDATED;
         InstitutionUpdatedEvent eventSend = new InstitutionUpdatedEvent(
                 currentUser.userId(),
+                currentUser.prefectureId(),
                 currentUser.role(),
                 currentUser.email(),
                 auditAction.title(currentUser.email(), entity.getName()),
@@ -71,6 +73,7 @@ public class RabbitPlacesInstitutionEventProducer {
         PlaceAuditAction auditAction = PlaceAuditAction.INSTITUTION_DELETED;
         InstitutionDeletedEvent eventSend = new InstitutionDeletedEvent(
                 currentUser.userId(),
+                currentUser.prefectureId(),
                 currentUser.role(),
                 currentUser.email(),
                 auditAction.title(currentUser.email(), entity.getName()),

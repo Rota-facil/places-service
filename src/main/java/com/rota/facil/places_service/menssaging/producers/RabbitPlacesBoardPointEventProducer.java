@@ -33,6 +33,7 @@ public class RabbitPlacesBoardPointEventProducer {
         PlaceAuditAction auditAction = PlaceAuditAction.BOARD_POINT_CREATED;
         BoardPointCreatedEvent eventSend = new BoardPointCreatedEvent(
                 currentUser.userId(),
+                currentUser.prefectureId(),
                 currentUser.role(),
                 currentUser.email(),
                 auditAction.title(currentUser.email(), entity.getName()),
@@ -52,6 +53,7 @@ public class RabbitPlacesBoardPointEventProducer {
         PlaceAuditAction auditAction = PlaceAuditAction.BOARD_POINT_UPDATED;
         BoardPointUpdatedEvent eventSend = new BoardPointUpdatedEvent(
                 currentUser.userId(),
+                currentUser.prefectureId(),
                 currentUser.role(),
                 currentUser.email(),
                 auditAction.title(currentUser.email(), entity.getName()),
@@ -71,6 +73,7 @@ public class RabbitPlacesBoardPointEventProducer {
         PlaceAuditAction auditAction = PlaceAuditAction.BOARD_POINT_DELETED;
         BoardPointDeletedEvent eventSend = new BoardPointDeletedEvent(
                 currentUser.userId(),
+                currentUser.prefectureId(),
                 currentUser.role(),
                 currentUser.email(),
                 auditAction.title(currentUser.email(), entity.getName()),

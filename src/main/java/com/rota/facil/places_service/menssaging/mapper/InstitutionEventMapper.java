@@ -12,6 +12,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface InstitutionEventMapper {
     @Mapping(target = "userId", source = "currentUser.userId")
+    @Mapping(target = "prefectureId", source = "currentUser.prefectureId")
     @Mapping(target = "userEmail", source = "currentUser.email")
     @Mapping(target = "role", source = "currentUser.role")
     @Mapping(target = "actionTitle", expression = "java(currentUser.email() + actionType.getTitle() + \"instituição \" + entity.getName())")
