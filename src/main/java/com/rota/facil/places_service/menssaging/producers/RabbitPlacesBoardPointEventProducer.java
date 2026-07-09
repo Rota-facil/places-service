@@ -1,21 +1,21 @@
 package com.rota.facil.places_service.menssaging.producers;
 
-import com.rota.facil.places_service.domain.enums.ActionType;
+import com.rota.facil.places_service.ResourceName;
+import com.rota.facil.places_service.domain.enums.PlaceAuditAction;
 import com.rota.facil.places_service.http.dto.request.CurrentUser;
-import com.rota.facil.places_service.menssaging.dto.send.BoardPointEvent;
-import com.rota.facil.places_service.menssaging.mapper.BoardPointEventMapper;
+import com.rota.facil.places_service.menssaging.dto.send.BoardPointCreatedEvent;
+import com.rota.facil.places_service.menssaging.dto.send.BoardPointDeletedEvent;
+import com.rota.facil.places_service.menssaging.dto.send.BoardPointUpdatedEvent;
 import com.rota.facil.places_service.persistence.entities.BoardPointEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @RequiredArgsConstructor
 public class RabbitPlacesBoardPointEventProducer {
     private final RabbitTemplate rabbitTemplate;
-    private final BoardPointEventMapper boardPointEventMapper;
 
     @Value("${rabbitmq.places.exchange}")
     private String placesExchange;
@@ -29,18 +29,60 @@ public class RabbitPlacesBoardPointEventProducer {
     @Value("${rabbitmq.boarding.deleted.routing.key}")
     private String boardPointDeletedRoutingKey;
 
-    public void createBoardPointEvent(BoardPointEntity boardPointEntity, CurrentUser currentUser) {
-        BoardPointEvent boardPointEventSend = boardPointEventMapper.map(boardPointEntity, currentUser, ActionType.CREATE);
-        rabbitTemplate.convertAndSend(placesExchange, boardPointCreatedRoutingKey, boardPointEventSend);
+    public void createBoardPointEvent(BoardPointEntity entity, CurrentUser currentUser) {
+        PlaceAuditAction auditAction = PlaceAuditAction.BOARD_POINT_CREATED;
+        BoardPointCreatedEvent eventSend = new BoardPointCreatedEvent(
+                currentUser.userId(),
+                currentUser.role(),
+                currentUser.email(),
+                auditAction.title(currentUser.email(), entity.getName()),
+                auditAction.getActionType(),
+                ResourceName.BOARD_POINT.name(),
+                entity.getId(),
+                entity.getId(),
+                entity.getName(),
+                entity.getLatitude(),
+                entity.getLongitude()
+        );
+
+        rabbitTemplate.convertAndSend(placesExchange, boardPointCreatedRoutingKey, eventSend);
     }
 
-    public void updateBoardPointEvent(BoardPointEntity boardPointEntity, CurrentUser currentUser) {
-        BoardPointEvent boardPointEventSend = boardPointEventMapper.map(boardPointEntity, currentUser, ActionType.UPDATE);
-        rabbitTemplate.convertAndSend(placesExchange, boardPointUpdatedRoutingKey, boardPointEventSend);
+    public void updateBoardPointEvent(BoardPointEntity entity, CurrentUser currentUser) {
+        PlaceAuditAction auditAction = PlaceAuditAction.BOARD_POINT_UPDATED;
+        BoardPointUpdatedEvent eventSend = new BoardPointUpdatedEvent(
+                currentUser.userId(),
+                currentUser.role(),
+                currentUser.email(),
+                auditAction.title(currentUser.email(), entity.getName()),
+                auditAction.getActionType(),
+                ResourceName.BOARD_POINT.name(),
+                entity.getId(),
+                entity.getId(),
+                entity.getName(),
+                entity.getLatitude(),
+                entity.getLongitude()
+        );
+
+        rabbitTemplate.convertAndSend(placesExchange, boardPointUpdatedRoutingKey, eventSend);
     }
 
-    public void deleteBoardPointEvent(BoardPointEntity boardPointEntity, CurrentUser currentUser) {
-        BoardPointEvent boardPointEventSend = boardPointEventMapper.map(boardPointEntity, currentUser, ActionType.DELETE);
-        rabbitTemplate.convertAndSend(placesExchange, boardPointDeletedRoutingKey, boardPointEventSend);
+    public void deleteBoardPointEvent(BoardPointEntity entity, CurrentUser currentUser) {
+        PlaceAuditAction auditAction = PlaceAuditAction.BOARD_POINT_DELETED;
+        BoardPointDeletedEvent eventSend = new BoardPointDeletedEvent(
+                currentUser.userId(),
+                currentUser.role(),
+                currentUser.email(),
+                auditAction.title(currentUser.email(), entity.getName()),
+                auditAction.getActionType(),
+                ResourceName.BOARD_POINT.name(),
+                entity.getId(),
+                entity.getId(),
+                entity.getName(),
+                entity.getLatitude(),
+                entity.getLongitude()
+        );
+
+        rabbitTemplate.convertAndSend(placesExchange, boardPointDeletedRoutingKey, eventSend);
     }
 }
