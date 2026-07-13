@@ -1,106 +1,57 @@
 # places-service
 
-Servico de lugares do Rota Facil. Mantem o cadastro de enderecos, instituicoes e pontos de embarque usados pelo dominio de transporte.
-
-## Para que serve
-
-- Cadastrar enderecos reutilizaveis.
-- Cadastrar instituicoes com latitude/longitude.
-- Cadastrar pontos de embarque com latitude/longitude.
-- Publicar eventos para sincronizar `transport-service`, `file-service` e `audit-service`.
+Serviço de lugares do Rota Fácil. É a fonte de verdade para instituições e pontos de embarque.
 
 ## Porta e base path
 
-- Aplicacao: `places-service`
 - Porta: `8083`
 - Context path: `/places`
 - Via gateway: `http://localhost:8080/places`
 
-## Endpoints principais
+## Endpoints
 
-Enderecos:
+Instituições:
 
-- `POST /places/places-address`: cria endereco.
-- `GET /places/places-address`: lista enderecos.
-- `GET /places/places-address/{id}`: busca endereco.
-- `PUT /places/places-address/{id}`: atualiza endereco.
-- `DELETE /places/places-address/{id}`: remove endereco.
-
-Instituicoes:
-
-- `POST /places/institutions`: cria instituicao.
-- `GET /places/institutions`: lista instituicoes.
-- `GET /places/institutions/{id}`: busca instituicao.
-- `PUT /places/institutions/{id}`: atualiza instituicao.
-- `DELETE /places/institutions/{id}`: remove instituicao.
+- `POST /places/institutions`
+- `GET /places/institutions?page=0&size=20`
+- `GET /places/institutions/{id}`
+- `PUT /places/institutions/{id}`
+- `DELETE /places/institutions/{id}`
 
 Pontos de embarque:
 
-- `POST /places/board-points`: cria ponto de embarque.
-- `GET /places/board-points`: lista pontos.
-- `GET /places/board-points/{id}`: busca ponto.
-- `PUT /places/board-points/{id}`: atualiza ponto.
-- `DELETE /places/board-points/{id}`: remove ponto.
+- `POST /places/board-points`
+- `GET /places/board-points?page=0&size=20`
+- `GET /places/board-points/{id}`
+- `PUT /places/board-points/{id}`
+- `DELETE /places/board-points/{id}`
 
-Infra:
+Infra: `GET /places/health-check`, `/places/v3/api-docs` e `/places/swagger-ui.html`.
 
-- `GET /places/health-check`
-- `/places/v3/api-docs`
-- `/places/swagger-ui.html`
+Não há controller HTTP separado para endereços no código atual. Endereço, nome, latitude e longitude fazem parte dos contratos de instituição/ponto.
 
-## Dados principais
+## Segurança
 
-Endereco:
-
-- `neighborhood`
-- `city`
-- `road`
-
-Instituicao e ponto de embarque:
-
-- `placesAddressId`
-- `name`
-- `latitude`
-- `longitude`
-
-## Seguranca
-
-No gateway, `/places/**` exige `ADMIN` ou `SUPERUSER`. Internamente o servico monta `CurrentUser` a partir dos headers enviados pelo gateway.
+GETs exigem autenticação. POST, PUT e DELETE exigem `ADMIN` ou `SUPERUSER`. O serviço usa os headers do gateway e isola dados por prefeitura.
 
 ## Eventos publicados
 
-Exchange: `places.events`
+Exchange `places.events`: `institution.created`, `institution.updated`, `institution.deleted`, `boarding.created`, `boarding.updated` e `boarding.deleted`.
 
-- `institution.created`
-- `institution.updated`
-- `institution.deleted`
-- `boarding.created`
-- `boarding.updated`
-- `boarding.deleted`
+O `transport-service` mantém cópias operacionais; o `file-service` limpa arquivos após exclusões; o `audit-service` registra as ações. Não há consumidores RabbitMQ neste serviço.
 
-## Banco de dados
+## Persistência
 
-- Default: `jdbc:postgresql://localhost:5433/places_database`
-- Usuario default: `rota-facil`
-- Senha default: `admin`
+- Banco: `jdbc:postgresql://localhost:5433/places_database`
+- Usuário padrão: `rota-facil`
 - Migrations: `src/main/resources/db/migration`
+- Hibernate: `ddl-auto=validate`
 
 ## Como rodar
-
-Pre-requisitos:
-
-- Java 21.
-- PostgreSQL com banco `places_database`.
-- Eureka.
-- RabbitMQ.
-
-Comando:
 
 ```bash
 cd places-service
 ./mvnw spring-boot:run
 ```
 
-## Especializacao
-
-Este servico e a fonte de verdade para instituicoes, pontos de embarque e enderecos. O `transport-service` mantem uma copia operacional desses dados por eventos para calcular rotas e viagens.
+Requer Java 21, PostgreSQL, Eureka e RabbitMQ.
