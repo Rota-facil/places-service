@@ -1,6 +1,6 @@
 package com.rota.facil.places_service.http.controllers;
 
-import com.rota.facil.places_service.business.InstitutionService;
+import com.rota.facil.places_service.business.institutions.*;
 import com.rota.facil.places_service.http.dto.request.CurrentUser;
 import com.rota.facil.places_service.http.dto.request.institution.CreateInstitutionRequestDTO;
 import com.rota.facil.places_service.http.dto.request.institution.UpdateInstitutionRequestDTO;
@@ -15,7 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 import java.util.UUID;
 
 @SecurityRequirement(name = "bearerAuth")
@@ -23,24 +23,28 @@ import java.util.UUID;
 @RequestMapping("/institutions")
 @RequiredArgsConstructor
 public class InstitutionController {
-    private final InstitutionService institutionService;
+    private final CreateInstitutionUseCase createInstitutionUseCase;
+    private final FindInstitutionByIdUseCase findInstitutionByIdUseCase;
+    private final FindAllInstitutionUseCase findAllInstitutionUseCase;
+    private final UpdateInstitutionUseCase updateInstitutionUseCase;
+    private final DeleteInstitutionUseCase deleteInstitutionUseCase;
 
     @PostMapping
     public ResponseEntity<InstitutionResponseDTO> createInstitution(
         @Valid @RequestBody CreateInstitutionRequestDTO request,
         @AuthenticationPrincipal CurrentUser currentUser
     ) {
-        return ResponseEntity.ok(institutionService.register(request, currentUser));
+        return ResponseEntity.ok(createInstitutionUseCase.execute(request, currentUser));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<InstitutionResponseDTO> findById(@PathVariable UUID id) {
-        return ResponseEntity.ok(institutionService.findById(id));
+        return ResponseEntity.ok(findInstitutionByIdUseCase.execute(id));
     }
 
     @GetMapping
     public ResponseEntity<Page<InstitutionResponseDTO>> findAll(@ParameterObject @PageableDefault Pageable pageable) {
-        return ResponseEntity.ok(institutionService.findAll(pageable));
+        return ResponseEntity.ok(findAllInstitutionUseCase.execute(pageable));
     }
 
     @PutMapping("/{id}")
@@ -49,7 +53,7 @@ public class InstitutionController {
         @Valid @RequestBody UpdateInstitutionRequestDTO request,
         @AuthenticationPrincipal CurrentUser currentUser
     ) {
-        return ResponseEntity.ok(institutionService.update(id, request, currentUser));
+        return ResponseEntity.ok(updateInstitutionUseCase.execute(id, request, currentUser));
     }
 
     @DeleteMapping("/{id}")
@@ -57,7 +61,7 @@ public class InstitutionController {
         @PathVariable UUID id,
         @AuthenticationPrincipal CurrentUser currentUser
     ) {
-        institutionService.delete(id, currentUser);
+        deleteInstitutionUseCase.execute(id, currentUser);
         return ResponseEntity.noContent().build();
     }
 }
